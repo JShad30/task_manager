@@ -1,18 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    {% for task in tasks %}
-    {{task.task_name}}
-    {{task.category_name}}
-    {{task.task_description}}
-    {{task.is_urgent}}
-    {{task.due_date}}
-    {% endfor %}
-</body>
-</html></1>
+{% extends 'base.html' %}
+{% block content %}
+    <ul class="collapsible" data-collapsible="accordion">
+        {% for task in tasks %}
+        <li>
+            <div class="collapsible-header">
+                <div class="col s3">
+                    <i class="material-icons">expand_more</i>
+                    <a class="waves-effect waves-light btn btn-small">Done</a>
+                    <a href="{{ url_for('edit_task', task_id=task._id) }}" class="waves-effect waves-light btn btn-small blue">Edit</a>
+                </div>
+                <div class=" task_header col s9">
+                    <strong>{{task.task_name}}</strong> - {{task.due_date}}
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <span>
+                    {{task.task_description}}
+                </span>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
