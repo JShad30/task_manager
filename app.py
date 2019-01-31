@@ -48,14 +48,35 @@ def update_task(task_id):
     tasks = mongo.db.tasks
     tasks.update( {'_id': ObjectId(task_id)},
     {
-        'task_name':request.form.get['task_name'],
-        'category_name':request.form.get['category_name'],
-        'task_description':request.form.get['task_description'],
-        'due_date':request.form.get['due_date'],
-        'is_urgent':request.form.get['is_urgent']
+        'task_name': request.form['task_name'],
+        'category_name': request.form['category_name'],
+        'task_description': request.form['task_description'],
+        'due_date': request.form['due_date'],
+        'is_urgent': 'is_urgent' in request.form
     })
     return redirect(url_for('get_tasks'))
     
+
+
+@app.route('/delete_task/<task_id>')
+def delete_task(task_id):
+    mongo.db.tasks.remove({'_id': ObjectId(task_id)})
+    return redirect(url_for('get_tasks'))
+    
+    
+    
+@app.route('/get_categories')
+def get_categories():
+    return render_template('categories.html',
+    categories=mongo.db.categories.find())
+    
+    
+    
+@app.route('/delete_category/<category_id>')
+def delete_category(category_id):
+    mongo.db.categories.remove({'_id': ObjectId(category_id)})
+    return redirect(url_for('get_categories'))
+ 
     
     
 if __name__ == "__main__":
